@@ -17,6 +17,7 @@
             <th>id</th>
             <th>邮箱</th>
             <th>姓名</th>
+            <th>角色</th>
             <th>创建时间</th>
             <th>操作</th>
         </tr>
@@ -25,6 +26,7 @@
             <td>{{ v.id }}</td>
             <td>{{ v.email }}</td>
             <td>{{ v.username }}</td>
+            <td>{{ v.roles.first().role_name }}</td>
             <td>{{ v.create_time }}</td>
             <td>
                 <a href="javascript:void(0)" class="del_user" data-id="{{ v.id }}">删除</a>

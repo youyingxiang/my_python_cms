@@ -20,8 +20,8 @@ def index():
 @bp.route('/logout/')
 @login_required
 def logout():
+    del session[config.ADMIN_SESSION_ID]
     session.clear()
-    # del session[config.ADMIN_SESSION_ID]
     return redirect(url_for('admin.index'))
 
 # 个人简介
@@ -144,10 +144,11 @@ def user_del():
 class UserEditView(views.MethodView):
     decorators = [login_required]
     def render(self,data=None,message=None):
-        print(data)
         roles = Role.query.all()
         if message is None:
-            data.role = data.roles.first().id
+            role = data.roles.first()
+            if role:
+                data.role = role.id
         return render_template('/admin/useredit.html', data=data,message=message,roles=roles)
     def get(self):
         user_id =  request.args.get('id')

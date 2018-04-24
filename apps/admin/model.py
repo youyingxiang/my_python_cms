@@ -96,25 +96,28 @@ class Role(db.Model):
         for v in menu.menu:
             if str(v.get('id')) in pris:
                 if v.get('action_name'):
-                    path = '/'+v.get('url_prefix')+'/'+ v.get('action_name')
+                    path = '/'+str(v.get('url_prefix'))+'/'+ str(v.get('action_name'))
                 else:
-                    path = '/' + v.get('url_prefix')
+                    path = '/' + str(v.get('url_prefix'))
+                path = path.replace('None','')
                 pri_path.append(path)
             if v.get('child'):
                 for vv in v.get('child'):
                     if str(vv.get('id')) in pris:
                         if vv.get('action_name'):
-                            path = '/' + vv.get('url_prefix') + '/' + vv.get('action_name')
+                            path = '/' + str(vv.get('url_prefix')) + '/' + str(vv.get('action_name'))
                         else:
-                            path = '/' + vv.get('url_prefix')
+                            path = '/' + str(vv.get('url_prefix'))
+                        path = path.replace('None', '')
                         pri_path.append(path)
                     if vv.get('child'):
                         for vvv in vv.get('child'):
                             if str(vvv.get('id')) in pris:
                                 if vv.get('action_name'):
-                                    path = '/' + vvv.get('url_prefix') + '/' + vvv.get('action_name')
+                                    path = '/' + str(vvv.get('url_prefix')) + '/' + str(vvv.get('action_name'))
                                 else:
-                                    path = '/' + vvv.get('url_prefix')
+                                    path = '/' + str(vvv.get('url_prefix'))
+                                    path = path.replace('None', '')
                                     pri_path.append(path)
         return ",".join(pri_path)
 
