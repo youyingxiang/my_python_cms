@@ -1,0 +1,57 @@
+{%  extends "admin/base.html" %}
+{% block title -%}
+    用户信息
+{%- endblock %}
+{% block pagetitle -%}
+    {{ self.title() }}
+{%- endblock %}
+{% block content -%}
+    <form action="{{ url_for('admin.useredit') }}" method="post">
+        <input type="hidden" name="id" value="{{ data.id }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="form-container">
+            <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-addon">邮箱</div>
+                  <input type="email" class="form-control"  value="{{ data.email }}" name='email' placeholder="请输入邮箱地址">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-addon">角色</div>
+                  <select class="form-control" name="role">
+                  {% for v in roles -%}
+                    <option value="{{ v.id }}" {% if data.role|string == v.id|string %}selected="selected"{% endif %}>{{ v.role_name }}</option>
+                  {%- endfor %}
+                  </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-addon">姓名</div>
+                  <input type="text" class="form-control"  name="username" value="{{ data.username }}" placeholder="请输入用户名称">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-addon">密码</div>
+                  <input type="password" class="form-control" name="password" placeholder="请确认密码">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-addon">请确认密码</div>
+                  <input type="password" class="form-control" name="renewpwd" placeholder="请确认密码">
+                </div>
+            </div>
+            <div class="form-group">
+                 <button class="btn btn-info" id="submit">立即提交</button>
+            </div>
+    </div>
+    </form>
+     {% if message %}
+         <script>zlalert.alertInfo("{{ message }}")</script>
+     {% endif %}
+{%- endblock %}

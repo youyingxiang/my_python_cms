@@ -1,0 +1,78 @@
+{%  extends "admin/base.html" %}
+{% block title -%}
+    增加角色
+{%- endblock %}
+
+{% block js -%}
+    <script src="{{ static('admin/js/role.js') }}"></script>
+{%- endblock %}
+
+{% block pagetitle -%}
+    {{ self.title() }}
+{%- endblock %}
+{% block content -%}
+    <form action="{{ url_for('admin.roleadd') }}" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div style="width: 70%">
+            <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-addon">角色名称</div>
+                  <input type="text" class="form-control" value="{{ data.role_name }}"name='role_name'
+                         placeholder="请输入角色名称">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-addon">角色类型</div>
+                  <select class="form-control" name="role_type">
+                      <option value="2" {% if data.role_type == '2' %}selected="selected"{% endif %}>普通管理员</option>
+                      <option value="1" {% if data.role_type == '1' %}selected="selected"{% endif %} >超级管理员</option>
+                  </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-addon">描述</div>
+                  <input type="text" class="form-control" name="describe" value="{{ data.describe }}"
+                         placeholder="请输入描述信息">
+                </div>
+            </div>
+            <div class="form-group" id="pri_">
+                  <div class="btn btn-warning">权限选择</div>
+                {% for v in menu -%}
+                <div class="checkbox_pri">
+                    <div class="first">
+                      <input type="checkbox" name="role_pri"
+                            value="{{ v.id }}"  {% if v.id|string in data.role_pri %} checked="checked"
+                      {% endif %}>{{ v.pri_name }}
+                    </div>
+                    {% for vv in v.child -%}
+                    <div class="other">
+                        <span>
+                        <input type="checkbox" name="role_pri"
+                            value="{{ vv.id }}" {% if vv.id|string in data.role_pri %} checked="checked"
+                        {% endif %}>{{ vv.pri_name }}
+                        </span>
+                        {% for vvv in vv.child -%}
+                        <span>
+                        <input type="checkbox" name="role_pri"
+                        value="{{ vvv.id }}" {% if vvv.id|string in data.role_pri %} checked="checked"
+                        {% endif %}>{{ vvv.pri_name }}
+                        </span>
+                        {%- endfor %}
+                    </div>
+                    {%- endfor %}
+                </div>
+                {%- endfor %}
+
+                </div>
+            <div class="form-group">
+                 <button class="btn btn-info" id="submit">立即提交</button>
+            </div>
+
+    </div>
+    </form>
+     {% if message %}
+         <script>zlalert.alertInfo("{{ message }}")</script>
+     {% endif %}
+{%- endblock %}

@@ -1,0 +1,41 @@
+{% from 'common/_macro.html' import static %}
+{%  extends "admin/base.html" %}
+
+{% block title -%}
+    角色列表
+{%- endblock %}
+{% block pagetitle -%}
+    {{ self.title() }}
+{%- endblock %}
+{% block js -%}
+   <script src="{{ static('admin/js/role.js') }}"></script>
+{%- endblock %}
+{% block content %}
+    <table class="table table-bordered">
+    <a class="btn btn-primary" style="margin-bottom: 10px" href="{{ url_for('admin.roleadd') }}">增加</a>
+        <tr>
+            <th>id</th>
+            <th>角色名称</th>
+            <th>角色类型</th>
+            <th>角色描叙</th>
+            <th>角色权限</th>
+            <th>创建时间</th>
+            <th>操作</th>
+        </tr>
+        {% for v in data %}
+            <tr>
+            <td>{{ v.id }}</td>
+            <td>{{ v.role_name }}</td>
+            <td>{% if v.role_type== 2 %}普通管理员{% elif v.role_type== 1 %}超级管理员{% endif %}</td>
+            <td>{{ v.describe }}</td>
+            <td>{{ v.role_pri_name}}</td>
+            <td>{{ v.create_time }}</td>
+            <td>
+                <a href="javascript:void(0)" class="del_role" data-id="{{ v.id }}">删除</a>
+                &nbsp
+                <a href="{{ url_for('admin.roleedit',id=v.id) }}">编辑</a>
+            </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
