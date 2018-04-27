@@ -7,6 +7,7 @@ from exts import db,mail
 from flask_mail import Message
 from utils import menu
 import config,string,random
+from tasks import send_mail
 bp = Blueprint('admin',__name__,url_prefix='/admin')
 
 
@@ -110,14 +111,20 @@ def send_email():
         num = map(lambda x:str(x),range(10))
         strnum.extend(num)
         captche = "".join(random.sample(strnum,6))
-        message = Message('后台邮箱验证码',body='你的验证码是：'+captche,recipients=[email])
         try:
-            mail.send(message)
-            redis.set(email,captche,120)
+            send_mail.delay('Python论坛邮箱验证码', [email], '您的验证码是：%s' % captche)
+            redis.set(email, captche, 120)
             return restful.success('邮件发送成功！')
         except Exception as e:
             return restful.server_error(str(e))
-        pass
+        # message = Message('后台邮箱验证码',body='你的验证码是：'+captche,recipients=[email])
+        # try:
+        #     mail.send(message)
+        #     redis.set(email,captche,120)
+        #     return restful.success('邮件发送成功！')
+        # except Exception as e:
+        #     return restful.server_error(str(e))
+        # pass
     else:
         return restful.params_error('请输入邮箱地址！')
 # 用户列表

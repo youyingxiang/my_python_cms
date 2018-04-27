@@ -23,7 +23,10 @@ class ReSetEmailForm(FormBase):
     email = StringField(validators=[email(message='邮箱格式不正确'), InputRequired(message='邮箱输入不能为空')])
     captche = StringField(validators=[Length(min=6,max=6,message='请输入正确验证码长度')])
     def validate_email(self,field):
+        print(field)
         email = field.data
+        print(email)
+        print(g.u.email)
         if email == g.u.email:
             raise ValidationError('修改邮箱和当前邮箱重复！')
         is_exis = User.query.filter(User.email == email).count()

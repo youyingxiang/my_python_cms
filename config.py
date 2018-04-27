@@ -23,3 +23,8 @@ MAIL_PORT           = '25'
 MAIL_DEFAULT_SENDER = "you1365831278@163.com"
 
 
+# celery相关的配置
+CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
+CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
+
+
